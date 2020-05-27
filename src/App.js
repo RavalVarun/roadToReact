@@ -20,17 +20,24 @@ const list = [
   },
 ];
 
-const App = () => (
+const App = () => {
+  //do something in between
+  const handleChange = event => {
+    console.log(event.target.value);
+  }
+
+  return (
     <div>
       <h1>My Hacker Stories</h1>
        
       <label htmlFor="search">Search :</label>
-      <input id="serach" type="text" />
+      <input id="serach" type="text" onChange={handleChange}/>
 
       <hr />
       <List />  
     </div>
   );
+};
 
 
   const List = () =>
