@@ -93,11 +93,31 @@ const App = () => {
     setSearchTerm(event.target.value);
   };
 
-  const handleSearchSubmit = () => {
+  const handleSearchSubmit = event => {
     setUrl(`${API_ENDPOINT}${searchTerm}`);
+    event.preventDefault();
   };
 
- 
+  const SearchForm = ({
+    searchTerm,
+    onSearchInput,
+    onSearchSubmit,
+  }) => (
+    <form onSubmit={onSearchSubmit}>
+      <InputWithLabel
+        id="search"
+        value={searchTerm}
+        isFocused
+        onInputChange={onSearchInput}
+      >
+        <strong>Search: </strong>
+      </InputWithLabel>
+
+      <button type="submit" disabled={!searchTerm}>
+        Submit
+      </button>
+    </form>
+  )
 
   React.useEffect(() => {
     handleFetchStories();
@@ -107,35 +127,41 @@ const App = () => {
     <div>
       <h1>My Hacker Stories</h1>
 
-      <InputWithLabel
-        id="search"
-        value={searchTerm}
-        isFocused
-        onInputChange={handleSearchInput}
-      >
-        <strong>Search:</strong>
-      </InputWithLabel>
+      <SearchForm
+        searchTerm={searchTerm}
+        onSearchInput={handleSearchInput}
+        onSearchSubmit={handleSearchSubmit}
+      />
+      {/* <form onSubmit={handleSearchSubmit}>
+        <InputWithLabel
+          id="search"
+          value={searchTerm}
+          isFocused
+          onInputChange={handleSearchInput}
+        >
+          <strong>Search:</strong>
+        </InputWithLabel>
 
-      <button 
-        type="button"
-        disabled={!searchTerm}
-        onClick={handleSearchSubmit}
-      >
-        Submit
-      </button>
+        <button 
+          type="button"
+          disabled={!searchTerm}         
+        >
+          Submit
+        </button>
+      </form> */}
 
-      <hr />
+        <hr />
 
-      {stories.isError && <p>Something went wrong ...</p>}
+        {stories.isError && <p>Something went wrong ...</p>}
 
-      {stories.isLoading ? (
-        <p>Loading ...</p>
-      ) : (
-        <List
-          list={stories.data}
-          onRemoveItem={handleRemoveStory}
-        />
-      )}
+        {stories.isLoading ? (
+          <p>Loading ...</p>
+        ) : (
+          <List
+            list={stories.data}
+            onRemoveItem={handleRemoveStory}
+          />
+        )}
     </div>
   );
 };
